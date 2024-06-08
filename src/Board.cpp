@@ -7,6 +7,9 @@ const char* RESET = "\e[0m";
 const char* DARK_TEXT = "\e[30m";  // Black text
 const char* LIGHT_TEXT = "\e[37m"; // White text
 
+const char* COLUMN_LABELS[] = { "Ⓐ", "Ⓑ", "Ⓒ", "Ⓓ", "Ⓔ", "Ⓕ", "Ⓖ", "Ⓗ" };
+const char* ROW_LABELS[] = { "⑧", "⑦", "⑥", "⑤", "④", "③", "②", "①" };
+
 Board::Board() {
     board.resize(8, std::vector<std::shared_ptr<Piece>>(8, nullptr));
 
@@ -62,24 +65,61 @@ void Board::printPieceBottom(const std::shared_ptr<Piece>& piece, const char* bg
     }
 }
 
+void Board::printColumnLabels() const {
+    std::cout << "       ";
+    for (int col = 0; col < 8; ++col) {
+        std::cout << COLUMN_LABELS[col] << "      ";
+    }
+    std::cout << "\n";
+}
+
+void Board::printTopBorder() const {
+    std::cout << "   ╔═══════";
+    for (int i = 0; i < 6; ++i) {
+        std::cout << "═══════";
+    }
+    std::cout << "═══════╗\n";
+}
+
+void Board::printBottomBorder() const {
+    std::cout << "   ╚═══════";
+    for (int i = 0; i < 6; ++i) {
+        std::cout << "═══════";
+    }
+    std::cout << "═══════╝\n";
+}
+
 void Board::print() const {
-    for (int row = 0; row < 8; ++row) {
+    printColumnLabels();
+    printTopBorder();
+
+    for (int row = 7; row >= 0; --row) {  // Start from row 7 to row 0
+
+        // Printing the top
+        std::cout << "   ║";  // Print top left border
         for (int col = 0; col < 8; ++col) {
-            const char* bg_color = ((row + col) % 2 == 0) ? LIGHT_BG : DARK_BG;
+            const char *bg_color = ((row + col) % 2 == 0) ? LIGHT_BG : DARK_BG;
             printPieceTop(board[row][col], bg_color);
         }
-        std::cout << "\n";
+        std::cout << "║" << "\n";  // Print top right border
 
+        // Printing the middle
+        std::cout << " " << ROW_LABELS[7 - row] << " ║";  // Print middle left border and row
         for (int col = 0; col < 8; ++col) {
             const char* bg_color = ((row + col) % 2 == 0) ? LIGHT_BG : DARK_BG;
             printPieceMiddle(board[row][col], bg_color);
         }
-        std::cout << "\n";
+        std::cout << "║ " << ROW_LABELS[7 - row] << "\n";  // Print middle right border and row
 
+        // Printing the bottom
+        std::cout << "   ║";  // Print bottom left border
         for (int col = 0; col < 8; ++col) {
             const char* bg_color = ((row + col) % 2 == 0) ? LIGHT_BG : DARK_BG;
             printPieceBottom(board[row][col], bg_color);
         }
-        std::cout << "\n";
+        std::cout << "║" << "\n";  // Print right left border
     }
+
+    printBottomBorder();
+    printColumnLabels();
 }

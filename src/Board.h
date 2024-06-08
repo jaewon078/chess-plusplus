@@ -21,6 +21,9 @@ private:
     void printPieceTop(const std::shared_ptr<Piece>& piece, const char* bg_color) const;
     void printPieceMiddle(const std::shared_ptr<Piece>& piece, const char* bg_color) const;
     void printPieceBottom(const std::shared_ptr<Piece>& piece, const char* bg_color) const;
+    void printColumnLabels() const;
+    void printTopBorder() const;
+    void printBottomBorder() const;
 };
 
 #endif // BOARD_H
