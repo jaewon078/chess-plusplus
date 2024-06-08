@@ -37,7 +37,15 @@ std::string IO::getInput() const {
         std::getline(std::cin, input);
 
         if (input == "pgn" || std::regex_match(input, move_regex)) {
-            return input;
+            // Check if the input contains two identical coordinates
+            std::string from = input.substr(0, 2);
+            std::string to = input.substr(3, 2);
+
+            if (from == to) {
+                printOutput("Sire, the coordinates cannot be the same.");
+            } else {
+                return input;
+            }
         } else {
             printOutput("Sire, that input is invalid.");
         }

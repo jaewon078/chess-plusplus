@@ -31,7 +31,22 @@ void Game::start() {
 }
 
 bool Game::isMoveValid(const std::string& from, const std::string& to) const {
-    return true; // Placeholder
+    int fromRow = from[1] - '1';
+    int fromCol = from[0] - 'a';
+    int toRow = to[1] - '1';
+    int toCol = to[0] - 'a';
+
+    const Piece* piece = board.getPiece(fromRow, fromCol);
+
+    if (piece == nullptr) {
+        return false;
+    }
+
+    if (piece->getColor() != (whiteTurn ? WHITE : BLACK)) {
+        return false;
+    }
+
+    return piece->isMoveValid(fromRow, fromCol, toRow, toCol, board);
 }
 
 void Game::makeMove(const std::string& from, const std::string& to) {

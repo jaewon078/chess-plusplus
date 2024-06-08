@@ -5,10 +5,11 @@
 #include <string>
 
 enum PieceColor : uint8_t {
-    NONE = 0,
-    WHITE,
+    WHITE = 0,
     BLACK
 };
+
+class Board;
 
 class Piece {
 public:
@@ -18,6 +19,7 @@ public:
     virtual std::string getMiddleLine() const = 0;
     virtual std::string getBottomLine() const = 0;
     PieceColor getColor() const { return color; }
+    virtual bool isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Board& board) const = 0;
 
 protected:
     PieceColor color;
@@ -35,6 +37,8 @@ public:
     std::string getBottomLine() const override {
         return "  ===  ";
     }
+
+    bool isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Board& board) const override;
 };
 
 class Rook : public Piece {
@@ -49,6 +53,8 @@ public:
     std::string getBottomLine() const override {
         return "  ===  ";
     }
+
+    bool isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Board& board) const override;
 };
 
 class Knight : public Piece {
@@ -63,6 +69,8 @@ public:
     std::string getBottomLine() const override {
         return "  ===  ";
     }
+
+    bool isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Board& board) const override;
 };
 
 class Bishop : public Piece {
@@ -77,6 +85,8 @@ public:
     std::string getBottomLine() const override {
         return "  ===  ";
     }
+
+    bool isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Board& board) const override;
 };
 
 class Queen : public Piece {
@@ -91,6 +101,8 @@ public:
     std::string getBottomLine() const override {
         return "  ===  ";
     }
+
+    bool isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Board& board) const override;
 };
 
 class King : public Piece {
@@ -105,6 +117,8 @@ public:
     std::string getBottomLine() const override {
         return "  ===  ";
     }
+
+    bool isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Board& board) const override;
 };
 
 #endif // PIECE_H
