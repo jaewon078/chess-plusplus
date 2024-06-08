@@ -11,8 +11,8 @@ void IO::printWelcomeMessage() const {
     std::cout << spacer << WHITE_BG << "  " << BLACK_BG << "                                           " << WHITE_BG << "  " << RESET << "\n";
     std::cout << spacer << WHITE_BG << "  " << BLACK_BG << "              WELCOME TO CHESS             " << WHITE_BG << "  " << RESET << "\n";
     std::cout << spacer << WHITE_BG << "  " << BLACK_BG << "                                           " << WHITE_BG << "  " << RESET << "\n";
-    std::cout << spacer << WHITE_BG << "  " << BLACK_BG << "              ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜              " << WHITE_BG << "  " << RESET << "\n";
     std::cout << spacer << WHITE_BG << "  " << BLACK_BG << "              ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖              " << WHITE_BG << "  " << RESET << "\n";
+    std::cout << spacer << WHITE_BG << "  " << BLACK_BG << "              ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜              " << WHITE_BG << "  " << RESET << "\n";
     std::cout << spacer << WHITE_BG << "  " << BLACK_BG << "                                           " << WHITE_BG << "  " << RESET << "\n";
     std::cout << spacer << WHITE_BG <<                   "                                               " << RESET << "\n";
     std::cout << "\n" << "\n";
