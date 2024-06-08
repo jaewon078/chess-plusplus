@@ -12,30 +12,39 @@ const char* ROW_LABELS[] = { "⑧", "⑦", "⑥", "⑤", "④", "③", "②", "�
 
 Board::Board() {
     board.resize(8, std::vector<std::shared_ptr<Piece>>(8, nullptr));
+}
+
+void Board::initialize() {
+    board.resize(8, std::vector<std::shared_ptr<Piece>>(8, nullptr));
 
     // Initialize the board with pieces
-    board[0][0] = std::make_shared<Rook>(BLACK);
-    board[0][1] = std::make_shared<Knight>(BLACK);
-    board[0][2] = std::make_shared<Bishop>(BLACK);
-    board[0][3] = std::make_shared<Queen>(BLACK);
-    board[0][4] = std::make_shared<King>(BLACK);
-    board[0][5] = std::make_shared<Bishop>(BLACK);
-    board[0][6] = std::make_shared<Knight>(BLACK);
-    board[0][7] = std::make_shared<Rook>(BLACK);
+    board[0][0] = std::make_shared<Rook>(WHITE);
+    board[0][1] = std::make_shared<Knight>(WHITE);
+    board[0][2] = std::make_shared<Bishop>(WHITE);
+    board[0][3] = std::make_shared<Queen>(WHITE);
+    board[0][4] = std::make_shared<King>(WHITE);
+    board[0][5] = std::make_shared<Bishop>(WHITE);
+    board[0][6] = std::make_shared<Knight>(WHITE);
+    board[0][7] = std::make_shared<Rook>(WHITE);
 
     for (int i = 0; i < 8; ++i) {
-        board[1][i] = std::make_shared<Pawn>(BLACK);
-        board[6][i] = std::make_shared<Pawn>(WHITE);
+        board[1][i] = std::make_shared<Pawn>(WHITE);
+        board[6][i] = std::make_shared<Pawn>(BLACK);
     }
 
-    board[7][0] = std::make_shared<Rook>(WHITE);
-    board[7][1] = std::make_shared<Knight>(WHITE);
-    board[7][2] = std::make_shared<Bishop>(WHITE);
-    board[7][3] = std::make_shared<Queen>(WHITE);
-    board[7][4] = std::make_shared<King>(WHITE);
-    board[7][5] = std::make_shared<Bishop>(WHITE);
-    board[7][6] = std::make_shared<Knight>(WHITE);
-    board[7][7] = std::make_shared<Rook>(WHITE);
+    board[7][0] = std::make_shared<Rook>(BLACK);
+    board[7][1] = std::make_shared<Knight>(BLACK);
+    board[7][2] = std::make_shared<Bishop>(BLACK);
+    board[7][3] = std::make_shared<Queen>(BLACK);
+    board[7][4] = std::make_shared<King>(BLACK);
+    board[7][5] = std::make_shared<Bishop>(BLACK);
+    board[7][6] = std::make_shared<Knight>(BLACK);
+    board[7][7] = std::make_shared<Rook>(BLACK);
+}
+
+void Board::movePiece(int fromRow, int fromCol, int toRow, int toCol) {
+    board[toRow][toCol] = board[fromRow][fromCol];
+    board[fromRow][fromCol] = nullptr;
 }
 
 void Board::printPieceTop(const std::shared_ptr<Piece>& piece, const char* bg_color) const {

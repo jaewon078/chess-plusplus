@@ -14,7 +14,9 @@ extern const char* LIGHT_TEXT;
 class Board {
 public:
     Board();
+    void initialize();
     void print() const;
+    void movePiece(int fromRow, int fromCol, int toRow, int toCol);
 
 private:
     std::vector<std::vector<std::shared_ptr<Piece>>> board;

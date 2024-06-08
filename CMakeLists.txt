@@ -4,4 +4,6 @@ project(chess_plusplus)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(chess_plusplus src/main.cpp
-        src/Board.cpp)
+        src/Board.cpp
+        src/IO.cpp
+        src/Game.cpp)
