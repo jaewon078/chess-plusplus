@@ -92,7 +92,31 @@ bool Knight::isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const B
 }
 
 bool Bishop::isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Board& board) const {
-    return true;
+    // Bishop can only move diagonally (row and col delta must be the same)
+    if (std::abs(toCol-fromCol) != std::abs(toRow-fromRow)) {
+        return false;
+    }
+
+    // Get direction
+    int colDirection = (toCol > fromCol) ? 1 : -1;
+    int rowDirection = (toRow > fromRow) ? 1: -1;
+
+    // Check if any pieces block the bishop
+    int row = fromRow + rowDirection;
+    for (int col = fromCol + colDirection; col != toCol; col += colDirection) {
+        if (board.getPiece(row, col) != nullptr) {
+            return false;
+        }
+        row += rowDirection;
+    }
+
+    // The piece that the bishop potentially takes must be opponent
+    const Piece* target = board.getPiece(toRow, toCol);
+    if (target == nullptr || target->getColor() != color) {
+        return true;
+    }
+
+    return false;
 }
 
 bool Queen::isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Board& board) const {
