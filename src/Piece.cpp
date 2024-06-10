@@ -27,9 +27,6 @@ bool Pawn::isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Boa
         }
     }
 
-    // Add in en passant logic
-    // Handle promotion later
-
     return false;
 }
 
@@ -68,8 +65,6 @@ bool Rook::isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Boa
     if (target == nullptr || target->getColor() != color) {
         return true;
     }
-
-    // Add castling at another time
 
     return false;
 }
@@ -143,8 +138,6 @@ bool King::isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Boa
     if (target == nullptr || target->getColor() != color) {
         return true;
     }
-
-    // Need to add castling
 
     return false;
 }

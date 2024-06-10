@@ -18,6 +18,7 @@ public:
     void print() const;
     void movePiece(int fromRow, int fromCol, int toRow, int toCol);
     const Piece* getPiece(int row, int col) const { return board[row][col].get(); }
+    std::pair<int, int> findKingPosition(PieceColor color) const;
 
 private:
     std::vector<std::vector<std::shared_ptr<Piece>>> board;

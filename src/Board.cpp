@@ -132,3 +132,16 @@ void Board::print() const {
     printBottomBorder();
     printColumnLabels();
 }
+
+std::pair<int, int> Board::findKingPosition(PieceColor color) const {
+    for (int row = 0; row < 8; ++row) {
+        for (int col = 0; col < 8; ++col) {
+            const Piece* piece = getPiece(row, col);
+            if (piece != nullptr && piece->getColor() == color && dynamic_cast<const King*>(piece) != nullptr) {
+                return {row, col};
+            }
+        }
+    }
+    return {-1, -1}; // King not found, should not happen in a valid game
+}
+
