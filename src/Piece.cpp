@@ -133,5 +133,18 @@ bool Queen::isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Bo
 }
 
 bool King::isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Board& board) const {
-    return true;
+    // The king can move one in all directions
+    if (std::abs(toRow-fromRow) > 1 || std::abs(toCol-fromCol) > 1) {
+        return false;
+    }
+
+    // The piece that the king potentially takes must be opponent
+    const Piece* target = board.getPiece(toRow, toCol);
+    if (target == nullptr || target->getColor() != color) {
+        return true;
+    }
+
+    // Need to add castling
+
+    return false;
 }
