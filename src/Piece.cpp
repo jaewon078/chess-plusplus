@@ -1,6 +1,6 @@
-#include <iostream>
 #include "Piece.h"
 #include "Board.h"
+#include <cmath>
 
 bool Pawn::isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Board& board) const {
     // Check the direction that the pawn is supposed to move (black moves down, white up)
@@ -20,7 +20,7 @@ bool Pawn::isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Boa
     }
 
     // Check for diagonal moves
-    if (abs(toCol-fromCol) == 1 && toRow == fromRow + direction) {
+    if (std::abs(toCol-fromCol) == 1 && toRow == fromRow + direction) {
         const Piece* target = board.getPiece(toRow, toCol);
         if (target != nullptr && target->getColor() != color) {
             return true;
@@ -75,7 +75,20 @@ bool Rook::isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Boa
 }
 
 bool Knight::isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Board& board) const {
-    return true;
+    // Must move either two squares vertically and one square horizontally or move
+    // two squares horizontally and one square vertically
+    if (!((std::abs(toRow - fromRow) == 2 && std::abs(toCol - fromCol) == 1) ||
+          (std::abs(toCol - fromCol) == 2 && std::abs(toRow - fromRow) == 1))) {
+        return false;
+    }
+
+    // The piece that the knight potentially takes must be opponent
+    const Piece* target = board.getPiece(toRow, toCol);
+    if (target == nullptr || target->getColor() != color) {
+        return true;
+    }
+
+    return false;
 }
 
 bool Bishop::isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Board& board) const {
