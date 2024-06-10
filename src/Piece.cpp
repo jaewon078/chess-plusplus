@@ -34,7 +34,44 @@ bool Pawn::isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Boa
 }
 
 bool Rook::isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Board& board) const {
-    return true;
+    // The rook must move either horizontally or vertically
+    if (fromRow != toRow && fromCol != toCol) {
+        return false;
+    }
+
+    // Same row (horizontal)
+    if (fromRow == toRow) {
+        int direction = (toCol > fromCol) ? 1 : -1; // Determine direction of movement
+
+        // Check if any pieces block the rook within the row
+        for (int col = fromCol + direction; col != toCol; col+=direction) {
+            if (board.getPiece(toRow, col) != nullptr) {
+                return false;
+            }
+        }
+    }
+
+    // Same col (vertical)
+    if (fromCol == toCol) {
+        int direction = (toRow > fromRow) ? 1 : -1; // Determine direction of movement
+
+        // Check if any pieces block the rook within the col
+        for (int row = fromRow + direction; row != toRow; row += direction) {
+            if (board.getPiece(row, fromCol) != nullptr) {
+                return false;
+            }
+        }
+    }
+
+    // The piece that rook potentially takes must be opponent
+    const Piece* target = board.getPiece(toRow, toCol);
+    if (target == nullptr || target->getColor() != color) {
+        return true;
+    }
+
+    // Add castling at another time
+
+    return false;
 }
 
 bool Knight::isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Board& board) const {
