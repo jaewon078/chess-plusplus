@@ -120,7 +120,16 @@ bool Bishop::isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const B
 }
 
 bool Queen::isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Board& board) const {
-    return true;
+    // The queen acts like a combined rook and bishop
+    Rook tempRook(color);
+    Bishop tempBishop(color);
+
+    if (tempRook.isMoveValid(fromRow, fromCol, toRow, toCol, board) ||
+        tempBishop.isMoveValid(fromRow, fromCol, toRow, toCol, board)) {
+        return true;
+    }
+
+    return false;
 }
 
 bool King::isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Board& board) const {
