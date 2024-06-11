@@ -92,6 +92,12 @@ void Game::makeMove(const std::string& from, const std::string& to) {
         // Then move to proper position
         board.movePiece(fromRow, fromCol, fromRow, toCol, false);
         board.movePiece(fromRow, toCol, toRow, toCol, false);
+    } else if (isPromotion(fromRow, fromCol, toRow, toCol)) {
+        // Handling promotion
+        board.movePiece(fromRow, fromCol, toRow, toCol, false);
+        PieceColor color = board.getPiece(toRow, toCol)->getColor();
+        // Automatically a queen for now
+        board.setPiece(toRow, toCol, std::make_shared<Queen>(color));
     } else {
         // Normal move
         board.movePiece(fromRow, fromCol, toRow, toCol, false);
@@ -200,6 +206,17 @@ bool Game::isEnPassant(int fromRow, int fromCol, int toRow, int toCol) const {
                     }
                 }
             }
+        }
+    }
+    return false;
+}
+
+bool Game::isPromotion(int fromRow, int fromCol, int toRow, int toCol) const {
+    const Piece* piece = board.getPiece(fromRow, fromCol);
+    // Check if piece is pawn
+    if (const Pawn* pawn = dynamic_cast<const Pawn*>(piece)) {
+        if (toRow == 7 || toRow == 0) {
+            return true;
         }
     }
     return false;

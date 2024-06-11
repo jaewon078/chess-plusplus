@@ -22,6 +22,7 @@ private:
     bool willBeCheck(int fromRow, int fromCol, int toRow, int toCol) const;
     bool isCastlingMove(int fromRow, int fromCol, int toRow, int toCol) const;
     bool isEnPassant(int fromRow, int fromCol, int toRow, int toCol) const;
+    bool isPromotion(int fromRow, int fromCol, int toRow, int toCol) const;
 };
 
 #endif // GAME_H

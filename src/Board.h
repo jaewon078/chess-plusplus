@@ -19,6 +19,7 @@ public:
     void movePiece(int fromRow, int fromCol, int toRow, int toCol, bool isCopy);
     const Piece* getPiece(int row, int col) const { return board[row][col].get(); }
     std::pair<int, int> findKingPosition(PieceColor color) const;
+    void setPiece(int row, int col, std::shared_ptr<Piece> piece) { board[row][col] = piece; }
 
 private:
     std::vector<std::vector<std::shared_ptr<Piece>>> board;
