@@ -48,14 +48,19 @@ bool Game::isMoveValid(const std::string& from, const std::string& to) const {
         return false;
     }
 
-    // 3. Check if move is valid for the piece
+    // 3. Check if move is castling
+    if (isCastlingMove(fromRow, fromCol, toRow, toCol)) {
+        return true;
+    }
+
+    // 4. Check if move is valid for the piece
     if (!piece->isMoveValid(fromRow, fromCol, toRow, toCol, board)) {
         return false;
     }
 
-    // 4. Check if move exposes the king or resolves a check
+    // 5. Check if move exposes the king or resolves a check
     if (willBeCheck(fromRow, fromCol, toRow, toCol)) {
-        io.printOutput("Sire, do you wish to lose?");
+        io.printOutput("Sire, this move would put us in dire straits.");
         return false;
     }
 
@@ -69,8 +74,20 @@ void Game::makeMove(const std::string& from, const std::string& to) {
     int toRow = to[1] - '1';
     int toCol = to[0] - 'a';
 
-    // Move the piece on the board
-    board.movePiece(fromRow, fromCol, toRow, toCol);
+    // Check if the move is a castling move
+    if (isCastlingMove(fromRow, fromCol, toRow, toCol)) {
+        // Perform the actual castling
+        if (toCol == 6) { // Kingside
+            board.movePiece(fromRow, fromCol, toRow, toCol, false); // king
+            board.movePiece(fromRow, 7, fromRow, 5, false); // rook
+        } else if (toCol == 2) { // Queenside
+            board.movePiece(fromRow, fromCol, toRow, toCol, false); // king
+            board.movePiece(fromRow, 0, fromRow, 3, false);
+        }
+    } else {
+        // Normal move
+        board.movePiece(fromRow, fromCol, toRow, toCol, false);
+    }
 }
 
 bool Game::isInCheck(const Board& boardToCheck, PieceColor color) const {
@@ -97,11 +114,59 @@ bool Game::willBeCheck(int fromRow, int fromCol, int toRow, int toCol) const {
     // so implementing a copy board approach (although a bit expensive...)
 
     Board boardCopy = board;
-    boardCopy.movePiece(fromRow, fromCol, toRow, toCol);
+    boardCopy.movePiece(fromRow, fromCol, toRow, toCol, true);
 
     // Check if the moving piece will lead to check in the copied board
     const Piece* movingPiece = board.getPiece(fromRow, fromCol);
     bool isKingInCheck = isInCheck(boardCopy, movingPiece->getColor());
 
     return isKingInCheck;
+}
+
+bool Game::isCastlingMove(int fromRow, int fromCol, int toRow, int toCol) const {
+    const Piece* piece1 = board.getPiece(fromRow, fromCol);
+    const Piece* piece2 = nullptr;
+
+    // Determine kingside/queenside castling move
+    if (toCol == 6) {
+        piece2 = board.getPiece(fromRow, 7);
+    } else if (toCol == 2) {
+        piece2 = board.getPiece(fromRow, 0);
+    } else {
+        return false;
+    }
+
+    // This hurt to write as it might hurt to read, but if you follow the if statements
+    // The code is fairly simple to understand
+
+    // First check that piece1 is a king and piece2 is a rook
+    if (const King* king = dynamic_cast<const King*>(piece1)) {
+        if (const Rook *rook = dynamic_cast<const Rook *>(piece2)) {
+            // Now make sure that neither the king nor rook has moved
+            if (!king->getMoved() && !rook->getMoved()) {
+                // Now make sure that path between king and rook is clear
+
+                if (toCol == 6) { // Kingside
+                    if (board.getPiece(fromRow, 5) == nullptr && board.getPiece(fromRow, 6) == nullptr) {
+                        // Make sure that king not in check and will not pass through/end up in check
+                        if (!willBeCheck(fromRow, fromCol, fromRow, 5) &&
+                            !willBeCheck(fromRow, fromCol, fromRow, 6)) {
+                            return true;
+                        }
+                    }
+                } else if (toCol == 2) { // Queenside
+                    if (board.getPiece(fromRow, 1) == nullptr && board.getPiece(fromRow, 2) == nullptr &&
+                        board.getPiece(fromRow, 3) == nullptr) {
+                        // Make sure that king not in check and will not pass through/end up in check
+                        if (!willBeCheck(fromRow, fromCol, fromRow, 3) &&
+                            !willBeCheck(fromRow, fromCol, fromRow, 2)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return false;
 }

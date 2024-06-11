@@ -16,7 +16,7 @@ public:
     Board();
     void initialize();
     void print() const;
-    void movePiece(int fromRow, int fromCol, int toRow, int toCol);
+    void movePiece(int fromRow, int fromCol, int toRow, int toCol, bool isCopy);
     const Piece* getPiece(int row, int col) const { return board[row][col].get(); }
     std::pair<int, int> findKingPosition(PieceColor color) const;
 

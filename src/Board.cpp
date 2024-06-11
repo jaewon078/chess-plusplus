@@ -42,7 +42,16 @@ void Board::initialize() {
     board[7][7] = std::make_shared<Rook>(BLACK);
 }
 
-void Board::movePiece(int fromRow, int fromCol, int toRow, int toCol) {
+void Board::movePiece(int fromRow, int fromCol, int toRow, int toCol, bool isCopy) {
+    const Piece* piece = getPiece(fromRow, fromCol);
+
+    // If not copy and is either rook or king
+    if (!isCopy) {
+        if (dynamic_cast<const King*>(piece) || dynamic_cast<const Rook*>(piece)) {
+            board[fromRow][fromCol]->setMoved();
+        }
+    }
+
     board[toRow][toCol] = board[fromRow][fromCol];
     board[fromRow][fromCol] = nullptr;
 }
@@ -144,4 +153,3 @@ std::pair<int, int> Board::findKingPosition(PieceColor color) const {
     }
     return {-1, -1}; // King not found, should not happen in a valid game
 }
-

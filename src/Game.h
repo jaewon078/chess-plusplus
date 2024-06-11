@@ -19,6 +19,7 @@ private:
     void makeMove(const std::string& from, const std::string& to);
     bool isInCheck(const Board& boardToCheck, PieceColor color) const;
     bool willBeCheck(int fromRow, int fromCol, int toRow, int toCol) const;
+    bool isCastlingMove(int fromRow, int fromCol, int toRow, int toCol) const;
 };
 
 #endif // GAME_H

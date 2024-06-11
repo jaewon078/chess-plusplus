@@ -20,6 +20,8 @@ public:
     virtual std::string getBottomLine() const = 0;
     PieceColor getColor() const { return color; }
     virtual bool isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Board& board) const = 0;
+    virtual void setMoved() {};
+    virtual bool getMoved() const { return false; }
 
 protected:
     PieceColor color;
@@ -55,6 +57,11 @@ public:
     }
 
     bool isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Board& board) const override;
+    bool getMoved() const override { return moved; }
+    void setMoved() override { moved = true; }
+
+private:
+    bool moved { false };
 };
 
 class Knight : public Piece {
@@ -119,6 +126,11 @@ public:
     }
 
     bool isMoveValid(int fromRow, int fromCol, int toRow, int toCol, const Board& board) const override;
+    bool getMoved() const override { return moved; }
+    void setMoved() override{ moved = true; }
+
+private:
+    bool moved { false };
 };
 
 #endif // PIECE_H
