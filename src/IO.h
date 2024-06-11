@@ -9,6 +9,7 @@ public:
     void printBoard(const Board& board) const;
     std::string getInput() const;
     void printOutput(const std::string& message) const;
+    std::string getInputPromotion() const;
 };
 
 #endif // IO_H

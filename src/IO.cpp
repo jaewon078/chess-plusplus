@@ -49,3 +49,20 @@ std::string IO::getInput() const {
         }
     }
 }
+
+std::string IO::getInputPromotion() const {
+    std::string input;
+
+    while (true) {
+        printOutput("Promotion! Choose: R (Rook), K (Knight), B (Bishop), Q (Queen)");
+        std::getline(std::cin, input);
+        if (input == "Q") {
+            return input;
+        } else if (input == "R" || input == "K" || input == "B") {
+            printOutput("An interesting choice sire...");
+            return input;
+        } else {
+            printOutput("Sire, that input is invalid.");
+        }
+    }
+}
