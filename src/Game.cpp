@@ -55,6 +55,9 @@ bool Game::isMoveValid(const std::string& from, const std::string& to) const {
 
     // 4. Check if move is valid for the piece
     if (!piece->isMoveValid(fromRow, fromCol, toRow, toCol, board)) {
+        if (isEnPassant(fromRow, fromCol, toRow, toCol)) {
+            return true;
+        }
         return false;
     }
 
@@ -84,10 +87,17 @@ void Game::makeMove(const std::string& from, const std::string& to) {
             board.movePiece(fromRow, fromCol, toRow, toCol, false); // king
             board.movePiece(fromRow, 0, fromRow, 3, false);
         }
+    } else if (isEnPassant(fromRow, fromCol, toRow, toCol)) {
+        // We can move the capturing pawn onto the captured pawn first to delete
+        // Then move to proper position
+        board.movePiece(fromRow, fromCol, fromRow, toCol, false);
+        board.movePiece(fromRow, toCol, toRow, toCol, false);
     } else {
         // Normal move
         board.movePiece(fromRow, fromCol, toRow, toCol, false);
     }
+
+    lastMove = from + to;
 }
 
 bool Game::isInCheck(const Board& boardToCheck, PieceColor color) const {
@@ -168,5 +178,29 @@ bool Game::isCastlingMove(int fromRow, int fromCol, int toRow, int toCol) const 
         }
     }
 
+    return false;
+}
+
+bool Game::isEnPassant(int fromRow, int fromCol, int toRow, int toCol) const {
+    const Piece* piece = board.getPiece(fromRow, fromCol);
+    // Check if piece is pawn
+    if (const Pawn* pawn = dynamic_cast<const Pawn*>(piece)) {
+        // The move must be diagonal and
+        if (abs(fromCol - toCol) == 1 && (toRow - fromRow == (whiteTurn ? 1 : -1))) {
+            // The target square must be empty
+            if (board.getPiece(toRow, toCol) == nullptr) {
+                int lastFromRow = lastMove[1] - '1';
+                int lastToRow = lastMove[3] - '1';
+                int lastToCol = lastMove[2] - 'a';
+
+                // Now we check if the last move was a two-square pawn move
+                if (const Pawn* lastPawn = dynamic_cast<const Pawn*>(board.getPiece(lastToRow, lastToCol))) {
+                    if (lastToCol == toCol && abs(lastToRow - lastFromRow) == 2) {
+                        return true;
+                    }
+                }
+            }
+        }
+    }
     return false;
 }

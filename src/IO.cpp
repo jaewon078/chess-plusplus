@@ -26,17 +26,15 @@ void IO::printOutput(const std::string& message) const {
     std::cout << message << std::endl;
 }
 
-// Add printPGN functionality here later
-
 std::string IO::getInput() const {
     std::string input;
     std::regex move_regex("^[a-h][1-8] [a-h][1-8]$");
 
     while (true) {
-        printOutput("Enter move (e.g., e2 e4) or type \"pgn\":");
+        printOutput("Enter move (e.g., e2 e4):");
         std::getline(std::cin, input);
 
-        if (input == "pgn" || std::regex_match(input, move_regex)) {
+        if (std::regex_match(input, move_regex)) {
             // Check if the input contains two identical coordinates
             std::string from = input.substr(0, 2);
             std::string to = input.substr(3, 2);
