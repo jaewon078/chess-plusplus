@@ -10,6 +10,7 @@ public:
     std::string getInput() const;
     void printOutput(const std::string& message) const;
     std::string getInputPromotion() const;
+    std::string getPlayAgain() const;
 };
 
 #endif // IO_H

@@ -66,3 +66,18 @@ std::string IO::getInputPromotion() const {
         }
     }
 }
+
+std::string IO::getPlayAgain() const {
+    std::string input;
+
+    while (true) {
+        printOutput("Play again? (Y/N)");
+        std::getline(std::cin, input);
+
+        if (input == "Y" || input == "N") {
+            return input;
+        } else {
+            printOutput("Sire, that input is invalid.");
+        }
+    }
+}

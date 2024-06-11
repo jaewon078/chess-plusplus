@@ -1,5 +1,5 @@
-#include <iostream>
 #include "Board.h"
+#include <iostream>
 
 const char* DARK_BG = "\e[48;5;22m";  // Dark green background
 const char* LIGHT_BG = "\e[48;5;230m"; // Light cream background
@@ -15,7 +15,12 @@ Board::Board() {
 }
 
 void Board::initialize() {
-    board.resize(8, std::vector<std::shared_ptr<Piece>>(8, nullptr));
+    // Clear the existing pieces on the board
+    for (int row = 0; row < 8; ++row) {
+        for (int col = 0; col < 8; ++col) {
+            board[row][col] = nullptr;
+        }
+    }
 
     // Initialize the board with pieces
     board[0][0] = std::make_shared<Rook>(WHITE);
